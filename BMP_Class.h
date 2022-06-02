@@ -33,4 +33,48 @@ struct BitmapInfoHeader {
   uint32_t colors_important{0};           // Number of important colors used, 0 when every color is important
 };
 
+class BMP {
+  public:
+      
+    BMP(const std::string &file_name) {
+      read(file_name);
+    }
+
+    void read(const std::string &file_name) {
+        // Open the input file
+        std::ifstream input_stream{file_name, std::ifstream::binary};
+        if (input_stream.good()) {
+
+          // Read bitmap file header details into our file_header_ member
+          input_stream.read((char*)&file_header_, sizeof(file_header_));
+          // Validate file type to be BMP
+          if (file_header_.file_type != kBmpHex)
+            throw std::runtime_error("Error: Unrecognized file format, please input a .BMP file!");
+
+          // Read bitmap info header details into our info_header_ member
+          input_stream.read((char*)&info_header_, sizeof(info_header_));
+          // Validate bits per pixel == 24
+          if (info_header_.bits_per_pixel != kBitsPerPixel)
+            throw std::runtime_error("Error: Your .BMP file is not 24 bits per pixel, please input a 24 bits per pixel file!");
+          // Validate compression == 0
+          if (info_header_.compression != kCompression)
+            throw std::runtime_error("Error: Your .BMP file is compressed, please input an uncompressed file!");
+
+        }
+        else {
+          throw std::runtime_error("Error: Unable to locate " + file_name + "!");
+        }
+    }
+
+    void write(const char* file_name) {
+
+    }
+
+  private:
+    BitmapFileHeader file_header_;
+    BitmapInfoHeader info_header_;
+    std::vector<uint8_t> bitmap_data_;
+
+};
+
 #endif // BMP_CLASS_H_
