@@ -11,14 +11,15 @@ const uint16_t kBitsPerByte = 8;
 const uint16_t kBitsPerPixel = 24;
 const uint32_t kCompression = 0;
 
-#pragma pack(1)
+
+#pragma pack(1)                           // Disables struct memory alignment
 
 struct BitmapFileHeader {
   uint16_t file_type{0x0000};             // File type, must be 0x4D42 which is 'BM'
   uint32_t file_size{0};                  // Size of the BMP file (bytes)
   uint16_t app_reserved{0};               // Reserved, will always be 0
   uint16_t app_reserved2{0};              // Reserved, will always be 0
-  uint32_t data_offset{0};              // Starting position of the pixel array
+  uint32_t data_offset{0};                // Starting position of the pixel array
 };
 
 struct BitmapInfoHeader {
@@ -61,6 +62,12 @@ class BMP {
           // Validate compression == 0
           if (info_header_.compression != kCompression)
             throw std::runtime_error("Error: Your .BMP file is compressed, please input an uncompressed file!");
+
+          // Read pixel array data
+          input_stream.seekg(file_header_.data_offset, input_stream.beg);
+
+          // Define the size of the bitmap array
+          bitmap_data_.resize(info_header_.width * info_header_.height * info_header_.bits_per_pixel / kBitsPerByte);
 
         }
         else {
