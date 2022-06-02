@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
+// Constants
 const uint16_t kBmpHex = 0x4D42;
 const uint16_t kBitsPerByte = 8;
 const uint16_t kBitsPerPixel = 24;
 const uint32_t kCompression = 0;
-
 
 #pragma pack(1)                           // Disables struct memory alignment
 
@@ -26,7 +26,7 @@ struct BitmapInfoHeader {
   uint32_t size{0};                       // Size of the DIB header (bytes)
   int32_t width{0};                       // Width of bitmap in pixels
   int32_t height{0};                      // Height of bitmap in pixels
-  uint16_t number_of_planes{1};           // Number of color planes, must be 1
+  uint16_t number_of_planes{0};           // Number of color planes, must be 1
   uint16_t bits_per_pixel{0};             // No. of bits per pixel
   uint32_t compression{0};                // 0 - uncompressed. 
   uint32_t image_size{0};                 // 0 - for uncompressed images.
@@ -39,15 +39,14 @@ struct BitmapInfoHeader {
 class BMP {
   public:
       
-    BMP(const std::string &file_name) {
-      read(file_name);
+    BMP(const std::string &file_path) {
+      read(file_path);
     }
 
-    void read(const std::string &file_name) {
+    void read(const std::string &file_path) {
         // Open the input file
-        std::ifstream input_stream{file_name, std::ifstream::binary};
+        std::ifstream input_stream{file_path, std::ifstream::binary};
         if (input_stream.good()) {
-
           // Read bitmap file header details into our file_header_ member
           input_stream.read((char*)&file_header_, sizeof(file_header_));
           // Validate file type to be BMP
@@ -61,17 +60,18 @@ class BMP {
             throw std::runtime_error("Error: Your .BMP file is not 24 bits per pixel, please input a 24 bits per pixel file!");
           // Validate compression == 0
           if (info_header_.compression != kCompression)
-            throw std::runtime_error("Error: Your .BMP file is compressed, please input an uncompressed file!");
+            throw std::runtime_error("Error: Your .BMP file has been compressed before, please input an uncompressed file!");
 
-          // Read pixel array data
+          // Move input stream to pixel array data offset position
           input_stream.seekg(file_header_.data_offset, input_stream.beg);
-
-          // Define the size of the bitmap array
-          bitmap_data_.resize(info_header_.width * info_header_.height * info_header_.bits_per_pixel / kBitsPerByte);
-
+          // Allocate the size of the bitmap array
+          pixel_data_.resize(info_header_.width * info_header_.height * info_header_.bits_per_pixel / kBitsPerByte);
+          // Read in pixel array data
+          input_stream.read((char*)pixel_data_.data(), pixel_data_.size());
         }
+        // If the input stream initialization failed meaning no file found
         else {
-          throw std::runtime_error("Error: Unable to locate " + file_name + "!");
+          throw std::runtime_error("Error: Unable to locate " + file_path + "!");
         }
     }
 
@@ -82,7 +82,7 @@ class BMP {
   private:
     BitmapFileHeader file_header_;
     BitmapInfoHeader info_header_;
-    std::vector<uint8_t> bitmap_data_;
+    std::vector<uint8_t> pixel_data_;
 
 };
 
