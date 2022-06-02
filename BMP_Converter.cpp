@@ -1,6 +1,10 @@
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+#include "BMP_Class.h"
+
+
+int main() {
+
+  std::cout << "Hi" << std::endl;
+
 }
