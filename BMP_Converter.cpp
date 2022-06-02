@@ -6,7 +6,7 @@
 
 int main() {
   std::string file_name = "";
-  std::cout << "Input file name (Must be in BMP format, 24 bits per pixel, uncompressed):\n" << std::endl;
+  std::cout << "Input file path (File must be in BMP format, 24 bits per pixel, uncompressed):\n" << std::endl;
   std::cin >> file_name;
   try {
     BMP bmp(file_name);
