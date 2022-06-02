@@ -11,6 +11,8 @@ const uint16_t kBitsPerByte = 8;
 const uint16_t kBitsPerPixel = 24;
 const uint32_t kCompression = 0;
 
+#pragma pack(1)
+
 struct BitmapFileHeader {
   uint16_t file_type{0x0000};             // File type, must be 0x4D42 which is 'BM'
   uint32_t file_size{0};                  // Size of the BMP file (bytes)
