@@ -15,6 +15,8 @@ class MainFrame : public wxFrame {
     
     void OpenFile(wxCommandEvent &WXUNUSED(event));
     void OnTextChanged(wxCommandEvent &event);
+    void OnHelpButtonClick(wxCommandEvent &WXUNUSED(event));
+    void OnChangeDestButtonClick(wxCommandEvent &WXUNUSED(event));
     void OnNegativeButtonClick(wxCommandEvent &WXUNUSED(event));
     void CreatePhotoNegative();
 
