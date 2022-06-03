@@ -143,17 +143,3 @@ void BMP::PadStream(std::ofstream& output_stream) {
     output_stream.write((char*)padding_.data(), padding_.size());
   }
 }
-
-void Init() {
-  std::string file_path = "";
-  std::cout << "Input file path (File must be in BMP format, 24 bits per pixel, uncompressed):" << std::endl;
-  std::cin >> file_path;
-  try {
-    BMP bmp(file_path);
-    bmp.CreatePhotoNegative();
-  }
-  catch (const std::runtime_error &err) {
-    std::cerr << err.what() << std::endl;
-  }
-  std::cin >> file_path;
-}
