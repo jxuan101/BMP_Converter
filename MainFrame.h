@@ -9,12 +9,14 @@ class MainFrame : public wxFrame {
     void Quit(wxCommandEvent &WXUNUSED(event));
   
   private:
-    wxString current_doc_path_ = "C:/";
+    wxString current_doc_path_;
     wxTextCtrl *file_path_box_;
+    wxStaticText *status_message_;
     
     void OpenFile(wxCommandEvent &WXUNUSED(event));
     void OnTextChanged(wxCommandEvent &event);
     void OnNegativeButtonClick(wxCommandEvent &WXUNUSED(event));
+    void CreatePhotoNegative();
 
     DECLARE_EVENT_TABLE();
 };
