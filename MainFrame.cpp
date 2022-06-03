@@ -1,6 +1,7 @@
 #include <wx/wx.h>
 
 #include "MainFrame.h"
+#include "SettingFrame.h"
 #include "BMP.h"
 
 enum IDS {
@@ -31,12 +32,12 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 	file_path_box_->SetFocus();
 	wxButton *help_button = new wxButton(panel, HELP_BUTTON_ID, "Help", wxPoint(465, 150), wxSize(100, 35));
 	wxButton* set_output_button = new wxButton(panel, CHANGE_OUTPUT_DEST_ID, "Change Output Destination", wxPoint(20, 150), wxSize(200, 35));
-	window_list_ = new wxWindowList();
-	window_list_->Append(this);
 }
 
-void MainFrame::Quit(wxCommandEvent& WXUNUSED(event))
-{
+void MainFrame::Quit(wxCommandEvent &WXUNUSED(event)){
+	if (this->GetChildren().GetCount() > 0) {
+		this->DestroyChildren();
+	}
 	Close(true);
 }
 
@@ -59,12 +60,15 @@ void MainFrame::OnTextChanged(wxCommandEvent &event) {
 }
 
 void MainFrame::OnHelpButtonClick(wxCommandEvent &WXUNUSED(event)) {
-	MainFrame *settings = new MainFrame("Change Output Destination");
-	settings->Show(true);
+	MainFrame *help = new MainFrame("Change Output Destination");
+	this->AddChild(help);
+	help->Show(true);
 }
 
 void MainFrame::OnChangeDestButtonClick(wxCommandEvent &WXUNUSED(event)) {
-	
+	SettingFrame *settings = new SettingFrame("Settings");
+	this->AddChild(settings);
+	settings->Show(true);
 }
 
 void MainFrame::OnNegativeButtonClick(wxCommandEvent &WXUNUSED(event)) {

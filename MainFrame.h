@@ -14,7 +14,6 @@ class MainFrame : public wxFrame {
     wxString current_doc_path_;
     wxTextCtrl *file_path_box_;
     wxStaticText *status_message_;
-    wxWindowList *window_list_;
     
     void OpenFile(wxCommandEvent &WXUNUSED(event));
     void OnTextChanged(wxCommandEvent &event);
