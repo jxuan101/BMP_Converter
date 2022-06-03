@@ -31,6 +31,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 	file_path_box_->SetFocus();
 	wxButton *help_button = new wxButton(panel, HELP_BUTTON_ID, "Help", wxPoint(465, 150), wxSize(100, 35));
 	wxButton* set_output_button = new wxButton(panel, CHANGE_OUTPUT_DEST_ID, "Change Output Destination", wxPoint(20, 150), wxSize(200, 35));
+	window_list_ = new wxWindowList();
+	window_list_->Append(this);
 }
 
 void MainFrame::Quit(wxCommandEvent& WXUNUSED(event))
