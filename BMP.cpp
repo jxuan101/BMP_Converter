@@ -127,7 +127,7 @@ void BMP::CalculatePadding() {
 // affects the pixel array data.
 void BMP::PadStream(std::ifstream& input_stream) {
   // Loop through each row while reading in data then padding
-  for (int i = 0; i < info_header_.height; i++) {
+  for (size_t i = 0; i < info_header_.height; i++) {
     input_stream.read((char*)(pixel_data_.data() + pixel_data_row_size_ * i), pixel_data_row_size_);
     input_stream.read((char*)padding_.data(), padding_.size());
   }
@@ -137,7 +137,7 @@ void BMP::PadStream(std::ifstream& input_stream) {
 // when writing to files.
 void BMP::PadStream(std::ofstream& output_stream) {
   // Loop through each row while writing data then padding
-  for (int i = 0; i < info_header_.height; i++) {
+  for (size_t i = 0; i < info_header_.height; i++) {
     output_stream.write((char*)(pixel_data_.data() + pixel_data_row_size_ * i), pixel_data_row_size_);
     output_stream.write((char*)padding_.data(), padding_.size());
   }
