@@ -11,12 +11,14 @@ public:
   void Quit(wxCommandEvent &WXUNUSED(event));
 
 private:
-  wxString current_doc_path_;
-  wxTextCtrl *file_path_box_;
+  wxString current_folder_path_;
+  wxTextCtrl *folder_path_box_;
+  wxStaticText *status_message_;
 
-  void OpenFile(wxCommandEvent &WXUNUSED(event));
+  void OnSelectFolderButton(wxCommandEvent &WXUNUSED(event));
   void OnTextChanged(wxCommandEvent &event);
   void OnSaveButtonClick(wxCommandEvent &WXUNUSED(event));
 
+  DECLARE_EVENT_TABLE();
 };
 #endif // SETTING_FRAME_H_
