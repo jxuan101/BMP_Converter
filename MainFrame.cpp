@@ -129,8 +129,10 @@ void MainFrame::CreatePhotoNegative() {
 		// If the user provided no custom target directory
 		// for the output.
 		if (current_output_path_.empty()) {
-			bmp = new BMP(current_doc_path_.ToStdString());
+			std::string file_path = current_doc_path_.ToStdString();
+			bmp = new BMP(file_path);
 			bmp->CreatePhotoNegative();
+			current_output_path_ = file_path.substr(0, file_path.find_last_of('/') + 1);
 		}
 		// If the user did set a custom target directory.
 		else {
