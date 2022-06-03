@@ -4,6 +4,8 @@
 #include <wx/frame.h>
 #include <wx/wx.h>
 
+// This class defines the help window of our program.
+// It provides useful info about the program.
 class HelpFrame : public wxFrame {
   public:
     HelpFrame(const wxString& title);

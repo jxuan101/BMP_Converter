@@ -92,15 +92,22 @@ void MainFrame::OnTextChanged(wxCommandEvent& event) {
 	current_doc_path_ = event.GetString();
 }
 
+// Spawns a settings window where users can
+// choose to set their own destination directory.
 void MainFrame::OnHelpButtonClick(wxCommandEvent& WXUNUSED(event)) {
-	HelpFrame* help = new HelpFrame("Help");
+	HelpFrame* help = new HelpFrame("BMP Negative Converter - Help");
 	this->AddChild(help);
+	help->CenterOnParent();
 	help->Show(true);
 }
 
+// Spawns a help window where users can read
+// about the program's functionality and user
+// instructions.
 void MainFrame::OnChangeDestButtonClick(wxCommandEvent& WXUNUSED(event)) {
-	SettingFrame* settings = new SettingFrame("Settings");
+	SettingFrame* settings = new SettingFrame("BMP Negative Converter - Settings");
 	this->AddChild(settings);
+	settings->CenterOnParent();
 	settings->Show(true);
 }
 

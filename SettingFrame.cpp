@@ -108,5 +108,6 @@ void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	}
 
 	folder_path_box_->ChangeValue(current_folder_path_);
+	// Transfer the set path over to the main window for output.
 	((MainFrame*)GetParent())->SetOutputPath(current_folder_path_);
 }
