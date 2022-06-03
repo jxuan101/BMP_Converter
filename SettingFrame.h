@@ -21,6 +21,7 @@ private:
                                         // user input
   wxStaticText* status_message_;        
 
+  void FormatPath();
   void OnSelectFolderButton(wxCommandEvent& WXUNUSED(event));
   void OnTextChanged(wxCommandEvent& event);
   void OnSaveButtonClick(wxCommandEvent& WXUNUSED(event));

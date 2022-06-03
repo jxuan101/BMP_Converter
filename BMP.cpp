@@ -91,8 +91,10 @@ void BMP::CreatePhotoNegative() {
 
   // Construct full path to output file and
   // adds a negative identifier to the file name.
-  if (outgoing_path_[outgoing_path_.length() - 1] != '/') {
-    outgoing_path_ += '/';
+  if (outgoing_path_.length() > 0) {
+    if (outgoing_path_[outgoing_path_.length() - 1] != '/') {
+      outgoing_path_ += '/';
+    }
   }
   std::string output_file = outgoing_path_ + "negative_" + file_name_;
 

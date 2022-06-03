@@ -47,6 +47,12 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
   file_path_box_ = new wxTextCtrl(panel, TEXT_ID, "", wxPoint(20, 35), wxSize(425, -1));
   file_path_box_->SetHint("C:/example/example.bmp");
   file_path_box_->SetFocus();
+
+}
+
+// Set a custom user input directory path for output
+void MainFrame::SetOutputPath(wxString& output_path) {
+	current_output_path_ = output_path;
 }
 
 void MainFrame::Quit(wxCommandEvent& WXUNUSED(event)){
@@ -55,6 +61,15 @@ void MainFrame::Quit(wxCommandEvent& WXUNUSED(event)){
 		this->DestroyChildren();
 	}
 	Close(true);
+}
+
+// Replace '\\' with '/' to avoid formatting issues
+void MainFrame::FormatPath() {
+	for (size_t i = 0; i < current_doc_path_.Length(); i++) {
+		if (current_doc_path_.GetChar(i) == wxString("\\")) {
+			current_doc_path_.SetChar(i, wxUniChar('/'));
+		}
+	}
 }
 
 // This function will open a new dialog box that prompts
@@ -68,13 +83,7 @@ void MainFrame::OpenFile(wxCommandEvent& WXUNUSED(event)) {
 	// dialog.
 	if (OpenDialog->ShowModal() == wxID_OK) {
 		current_doc_path_ = OpenDialog->GetPath();
-		// Replace '\' with '/' to avoid accidently
-		// escaping characters.
-		for (size_t i = 0; i < current_doc_path_.Length(); i++) {
-			if (current_doc_path_.GetChar(i) == wxString("\\")) {
-				current_doc_path_.SetChar(i, wxUniChar('/'));
-			}
-		}
+		FormatPath();
 		// Display the path that the user chose to our text box.
 		file_path_box_->ChangeValue(current_doc_path_);
 	}
@@ -100,9 +109,11 @@ void MainFrame::OnChangeDestButtonClick(wxCommandEvent& WXUNUSED(event)) {
 void MainFrame::OnNegativeButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	if (current_doc_path_.empty()) {
 		status_message_->SetForegroundColour("#DA3E1C");
-		status_message_->SetLabel("Error: No file specified.");
+		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Error: No file specified.");
 	}
 	else {
+		FormatPath();
+		file_path_box_->ChangeValue(current_doc_path_);
 		CreatePhotoNegative();
 	}
 }
@@ -110,23 +121,30 @@ void MainFrame::OnNegativeButtonClick(wxCommandEvent& WXUNUSED(event)) {
 void MainFrame::CreatePhotoNegative() {
 	try {
 		BMP* bmp;
+		// If the user provided no custom target directory
+		// for the output.
 		if (current_output_path_.empty()) {
 			bmp = new BMP(current_doc_path_.ToStdString());
 			bmp->CreatePhotoNegative();
 		}
+		// If the user did set a custom target directory.
 		else {
 			bmp = new BMP(current_doc_path_.ToStdString(), current_output_path_.ToStdString());
 			bmp->CreatePhotoNegative();
 		}
 		status_message_->SetForegroundColour("#579D23");
-		status_message_->SetLabel("Success!");
+		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Success! File created at: " + current_output_path_);
+		status_message_->Wrap(425);
 	}
+	// If the file is not found.
 	catch (const std::runtime_error &err) {
 		status_message_->SetForegroundColour("#DA3E1C");
-		status_message_->SetLabel(err.what());
+		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " " + err.what());
 	}
+	// If the file is compressed, not 24 bits
+	// per pixel, or not a BMP file.
 	catch (const std::logic_error &err) {
 		status_message_->SetForegroundColour("#DA3E1C");
-		status_message_->SetLabel(err.what());
+		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " " + err.what());
 	}
 }

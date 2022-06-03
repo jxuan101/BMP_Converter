@@ -43,10 +43,20 @@ SettingFrame::SettingFrame(const wxString &title) : wxFrame(nullptr, wxID_ANY, t
   folder_path_box_ = new wxTextCtrl(panel, TEXT_ID, "", wxPoint(20, 35), wxSize(425, -1));
   folder_path_box_->SetHint("C:/example/");
   folder_path_box_->SetFocus();
+
 }
 
 void SettingFrame::Quit(wxCommandEvent &WXUNUSED(event)) {
 	Close(true);
+}
+
+void SettingFrame::FormatPath() {
+	// Replace '\\' with '/' to avoid formatting issues
+	for (size_t i = 0; i < current_folder_path_.Length(); i++) {
+		if (current_folder_path_.GetChar(i) == wxString("\\")) {
+			current_folder_path_.SetChar(i, wxUniChar('/'));
+		}
+	}
 }
 
 // This function will open a new dialog box that prompts
@@ -59,11 +69,7 @@ void SettingFrame::OnSelectFolderButton(wxCommandEvent& WXUNUSED(event)) {
 	// chooses a directory.
 	if (OpenDialog->ShowModal() == wxID_OK) {
 		current_folder_path_ = OpenDialog->GetPath();
-		for (size_t i = 0; i < current_folder_path_.Length(); i++) {
-			if (current_folder_path_.GetChar(i) == wxString("\\")) {
-				current_folder_path_.SetChar(i, wxUniChar('/'));
-			}
-		}
+		FormatPath();
 		folder_path_box_->ChangeValue(current_folder_path_);
 	}
 }
@@ -80,33 +86,29 @@ void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	if (stat(current_folder_path_, &info) == 0) {
 		if (info.st_mode & S_IFDIR) {
 			valid = true;
+			FormatPath();
 			status_message_->SetForegroundColour("#579D23");
-			status_message_->SetLabel("Success!");
+			status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Success! The output directory is now: " + current_folder_path_);
+			status_message_->Wrap(425);
 		}
 		else if (info.st_mode & S_IFREG) {
 			status_message_->SetForegroundColour("#DA3E1C");
 			status_message_->SetLabel(
-				"Error: Your provided path is a file not a directory.");
+				wxDateTime::Now().FormatTime() + " Error: Your provided path is a file not a directory.");
 			return;
 		}
 		else {
 			status_message_->SetForegroundColour("#DA3E1C");
-			status_message_->SetLabel("Error: Your provided path is not a valid directory.");
+			status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Error: Your provided path is not a valid directory.");
 			return;
 		}
 	}
 	else {
 		status_message_->SetForegroundColour("#DA3E1C");
-		status_message_->SetLabel("Error: Your path cannot be found.");
+		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Error: Your path cannot be found.");
 		return;
 	}
 
-	// Replace '\\' with '/' to avoid formatting issues
-	for (size_t i = 0; i < current_folder_path_.Length(); i++) {
-		if (current_folder_path_.GetChar(i) == wxString("\\")) {
-			current_folder_path_.SetChar(i, wxUniChar('/'));
-		}
-	}
 	folder_path_box_->ChangeValue(current_folder_path_);
 	((MainFrame*)GetParent())->SetOutputPath(current_folder_path_);
 }
