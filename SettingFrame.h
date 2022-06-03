@@ -6,18 +6,18 @@
 
 class SettingFrame : public wxFrame {
 public:
-  SettingFrame(const wxString &title);
+  SettingFrame(const wxString& title);
 
-  void Quit(wxCommandEvent &WXUNUSED(event));
+  void Quit(wxCommandEvent& WXUNUSED(event));
 
 private:
   wxString current_folder_path_;
-  wxTextCtrl *folder_path_box_;
-  wxStaticText *status_message_;
+  wxTextCtrl* folder_path_box_;
+  wxStaticText* status_message_;
 
-  void OnSelectFolderButton(wxCommandEvent &WXUNUSED(event));
-  void OnTextChanged(wxCommandEvent &event);
-  void OnSaveButtonClick(wxCommandEvent &WXUNUSED(event));
+  void OnSelectFolderButton(wxCommandEvent& WXUNUSED(event));
+  void OnTextChanged(wxCommandEvent& event);
+  void OnSaveButtonClick(wxCommandEvent& WXUNUSED(event));
 
   DECLARE_EVENT_TABLE();
 };

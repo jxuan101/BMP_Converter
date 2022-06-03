@@ -28,8 +28,7 @@ SettingFrame::SettingFrame(const wxString &title) : wxFrame(nullptr, wxID_ANY, t
 	status_message_ = new wxStaticText(panel, RESULT_TEXT_ID, "", wxPoint(20, 60), wxSize(425, 30), wxST_NO_AUTORESIZE | wxST_ELLIPSIZE_END);
 }
 
-void SettingFrame::Quit(wxCommandEvent &WXUNUSED(event))
-{
+void SettingFrame::Quit(wxCommandEvent &WXUNUSED(event)) {
 	Close(true);
 }
 

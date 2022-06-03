@@ -53,11 +53,12 @@ struct BitmapInfoHeader {
 class BMP {
   public:
       
-    BMP(const std::string &file_path);
+    BMP(const std::string& file_path);
+    BMP(const std::string& file_path, const std::string& folder_path);
 
     // This is called during constructor which
     // initializes all our private variables.
-    void Read(const std::string &file_path);
+    void Read(const std::string& file_path);
 
     // This outputs a new BMP file that has
     // the original image but with photo negative
@@ -80,12 +81,12 @@ class BMP {
 
     // This function applies only to input.
     // Ignores memory padding.
-    void PadStream(std::ifstream &input_stream);
+    void PadStream(std::ifstream& input_stream);
     
     // This function applies only to output.
     // Supplies memory padding according to 
     // the size of padding_.
-    void PadStream(std::ofstream &output_stream);
+    void PadStream(std::ofstream& output_stream);
 };
 
 #endif // BMP_H_
