@@ -1,5 +1,3 @@
-#include <wx/wx.h>
-
 #include "SettingFrame.h"
 #include "MainFrame.h"
 

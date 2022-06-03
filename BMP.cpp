@@ -1,8 +1,3 @@
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
-
 #include "BMP.h"
 
 BMP::BMP(const std::string& file_path) {

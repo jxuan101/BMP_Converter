@@ -1,5 +1,3 @@
-#include <wx/wx.h>
-
 #include "MainFrame.h"
 #include "SettingFrame.h"
 #include "BMP.h"
@@ -94,9 +92,7 @@ void MainFrame::OnTextChanged(wxCommandEvent& event) {
 }
 
 void MainFrame::OnHelpButtonClick(wxCommandEvent& WXUNUSED(event)) {
-	MainFrame* help = new MainFrame("Help");
-	this->AddChild(help);
-	help->Show(true);
+	wxLaunchDefaultBrowser("https://github.com/jxuan101/BMP_Converter/blob/master/README.md");
 }
 
 void MainFrame::OnChangeDestButtonClick(wxCommandEvent& WXUNUSED(event)) {
