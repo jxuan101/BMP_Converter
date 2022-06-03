@@ -1,5 +1,9 @@
 # :camera:BMP Converter (BMP Negative Converter)
-is a non-destructive image processing program that takes in a .BMP image file and creates a new .BMP image file with the photo negative filter on. This program uses a GUI built using [wxWidgets](https://www.wxwidgets.org) for C++.
+is a non-destructive image processing program that takes in a .BMP image file and creates a new .BMP image file with the photo negative filter on. This program uses a GUI built using [wxWidgets](https://www.wxwidgets.org) for C++. 
+
+NOTE: Currently, this program only supports windows. Feel free to try and compile the source by yourself on Linux and Mac systems since this program was made with wxWidgets, a C++ library made for cross platform applications.
+
+To use this program, either download the executable or use the building instructions [here](#build-from-source).
 
 This program assumes the following about the input:
 1. Must be a .BMP image file
@@ -78,3 +82,6 @@ If you need a brief explanation of what the program is or a brief refresher of t
 <p align="center">
   <img src="https://user-images.githubusercontent.com/35944722/171960201-8743a9e4-3722-4f9b-98f8-05c64bc3ced8.png">
 </p>
+
+## Build From Source
+TBD
