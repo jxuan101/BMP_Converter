@@ -18,6 +18,8 @@ class MainFrame : public wxFrame {
                                       // to read and edit (non-destructive)
     wxTextCtrl* file_path_box_;       // A pointer to a text box to track 
                                       // user input
+    wxString current_output_path_;    // The path to the directory where
+                                      // we place our output
     wxStaticText* status_message_;    // A pointer to a static text component
                                       // that will display the status of our
                                       // program or error messages that are

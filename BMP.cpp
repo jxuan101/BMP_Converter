@@ -91,7 +91,10 @@ void BMP::CreatePhotoNegative() {
 
   // Construct full path to output file and
   // adds a negative identifier to the file name.
-  std::string output_file = path_name_ + "negative_" + file_name_;
+  if (outgoing_path_[outgoing_path_.length() - 1] != '/') {
+    outgoing_path_ += '/';
+  }
+  std::string output_file = outgoing_path_ + "negative_" + file_name_;
 
   // Open an output stream to write binary 
   // data to a new file if it doesn't already
