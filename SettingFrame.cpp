@@ -6,7 +6,8 @@ enum IDS {
 	SELECT_FOLDER_BUTTON_ID = 1,
 	TEXT_ID = 2,
 	SAVE_FOLDER_BUTTON_ID = 3,
-	CLOSE_BUTTON_ID = 4
+	CLOSE_BUTTON_ID = 4,
+	RESULT_TEXT_ID = 5
 };
 
 BEGIN_EVENT_TABLE(SettingFrame, wxFrame)
@@ -24,6 +25,7 @@ SettingFrame::SettingFrame(const wxString &title) : wxFrame(nullptr, wxID_ANY, t
 	wxStaticText* input_text = new wxStaticText(panel, wxID_ANY, "Output Destination Directory", wxPoint(20, 15), wxDefaultSize, 0);
 	wxButton* save_folder_button = new wxButton(panel, SAVE_FOLDER_BUTTON_ID, "Save", wxPoint(350, 100), wxSize(100, 35));
 	wxButton* close_button = new wxButton(panel, CLOSE_BUTTON_ID, "Close", wxPoint(465, 100), wxSize(100, 35));
+	status_message_ = new wxStaticText(panel, RESULT_TEXT_ID, "", wxPoint(20, 60), wxSize(425, 30), wxST_NO_AUTORESIZE | wxST_ELLIPSIZE_END);
 }
 
 void SettingFrame::Quit(wxCommandEvent &WXUNUSED(event))
