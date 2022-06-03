@@ -1,6 +1,8 @@
+#ifndef MAIN_FRAME_H_
+#define MAIN_FRAME_H_
+
 #include <wx/frame.h>
 #include <wx/wx.h>
-#include <string>
 
 class MainFrame : public wxFrame {
   public:
@@ -22,3 +24,5 @@ class MainFrame : public wxFrame {
 
     DECLARE_EVENT_TABLE();
 };
+
+#endif // MAIN_FRAME_H_

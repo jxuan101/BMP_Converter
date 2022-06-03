@@ -1,5 +1,5 @@
-#ifndef BMP_CLASS_H_
-#define BMP_CLASS_H_
+#ifndef BMP_H_
+#define BMP_H_
 
 #include <fstream>
 #include <iostream>
@@ -88,4 +88,4 @@ class BMP {
     void PadStream(std::ofstream &output_stream);
 };
 
-#endif // BMP_CLASS_H_
+#endif // BMP_H_
