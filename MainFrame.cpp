@@ -57,7 +57,8 @@ void MainFrame::OnTextChanged(wxCommandEvent &event) {
 }
 
 void MainFrame::OnHelpButtonClick(wxCommandEvent &WXUNUSED(event)) {
-	
+	MainFrame *settings = new MainFrame("Change Output Destination");
+	settings->Show(true);
 }
 
 void MainFrame::OnChangeDestButtonClick(wxCommandEvent &WXUNUSED(event)) {
