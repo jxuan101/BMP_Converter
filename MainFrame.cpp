@@ -1,5 +1,6 @@
 #include "MainFrame.h"
 #include "SettingFrame.h"
+#include "HelpFrame.h"
 #include "BMP.h"
 
 // Enumerated IDs that will be used
@@ -92,12 +93,13 @@ void MainFrame::OnTextChanged(wxCommandEvent& event) {
 }
 
 void MainFrame::OnHelpButtonClick(wxCommandEvent& WXUNUSED(event)) {
-	wxLaunchDefaultBrowser("https://github.com/jxuan101/BMP_Converter/blob/master/README.md");
+	HelpFrame* help = new HelpFrame("Help");
+	this->AddChild(help);
+	help->Show(true);
 }
 
 void MainFrame::OnChangeDestButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	SettingFrame* settings = new SettingFrame("Settings");
-	settings->Center();
 	this->AddChild(settings);
 	settings->Show(true);
 }

@@ -9,6 +9,8 @@ class HelpFrame : public wxFrame {
     HelpFrame(const wxString& title);
 
   private:
+    void HandleButton(wxCommandEvent& WXUNUSED(event));
+
     DECLARE_EVENT_TABLE();
 };
 
