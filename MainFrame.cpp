@@ -21,7 +21,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_TEXT(TEXT_ID, MainFrame::OnTextChanged)
 END_EVENT_TABLE()
 
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(600, 235), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(600, 215), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	wxPanel *panel = new wxPanel(this, wxID_ANY);
 	wxStaticText *input_text = new wxStaticText(panel, wxID_ANY, "Input File Path (File must be in BMP format, 24 Bits Per Pixel, Uncompressed)", wxPoint(20, 15), wxDefaultSize, 0);
 	wxButton *open_file_button = new wxButton(panel, OPEN_FILE_BUTTON_ID, "Open File", wxPoint(465, 10), wxSize(100, 35));
@@ -30,8 +30,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 	status_message_ = new wxStaticText(panel, OUTPUT_TEXT_ID, "", wxPoint(20, 60), wxSize(425, 70), wxST_NO_AUTORESIZE | wxST_ELLIPSIZE_END);
 	file_path_box_->SetHint("C:/example/example.bmp");
 	file_path_box_->SetFocus();
-	wxButton *help_button = new wxButton(panel, HELP_BUTTON_ID, "Help", wxPoint(465, 150), wxSize(100, 35));
-	wxButton* set_output_button = new wxButton(panel, CHANGE_OUTPUT_DEST_ID, "Change Output Destination", wxPoint(20, 150), wxSize(200, 35));
+	wxButton *help_button = new wxButton(panel, HELP_BUTTON_ID, "Help", wxPoint(465, 130), wxSize(100, 35));
+	wxButton* set_output_button = new wxButton(panel, CHANGE_OUTPUT_DEST_ID, "Change Output Destination", wxPoint(20, 130), wxSize(200, 35));
 }
 
 void MainFrame::Quit(wxCommandEvent &WXUNUSED(event)){
