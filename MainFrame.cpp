@@ -145,11 +145,13 @@ void MainFrame::CreatePhotoNegative() {
 	catch (const std::runtime_error &err) {
 		status_message_->SetForegroundColour("#DA3E1C");
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " " + err.what());
+		status_message_->Wrap(425);
 	}
 	// If the file is compressed, not 24 bits
 	// per pixel, or not a BMP file.
 	catch (const std::logic_error &err) {
 		status_message_->SetForegroundColour("#DA3E1C");
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " " + err.what());
+		status_message_->Wrap(425);
 	}
 }
