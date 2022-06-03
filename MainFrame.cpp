@@ -88,7 +88,11 @@ void MainFrame::CreatePhotoNegative() {
 		status_message_->SetForegroundColour("#579D23");
 		status_message_->SetLabel("Success!");
 	}
-	catch (const std::runtime_error& err) {
+	catch (const std::runtime_error &err) {
+		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetLabel(err.what());
+	}
+	catch (const std::logic_error &err) {
 		status_message_->SetForegroundColour("#DA3E1C");
 		status_message_->SetLabel(err.what());
 	}

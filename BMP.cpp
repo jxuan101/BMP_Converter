@@ -24,13 +24,13 @@ void BMP::Read(const std::string& file_path) {
     input_stream.read((char*)&file_header_, sizeof(file_header_));
     // Validate file type to be BMP
     if (file_header_.file_type != kBmpHex)
-      throw std::runtime_error("Error: Unrecognized file format, please input a .BMP file!");
+      throw std::logic_error("Error: Unrecognized file format, please input a .BMP file!");
 
     input_stream.read((char*)&info_header_, sizeof(info_header_));
     // Validate bits per pixel == 24, the only
     // bpp that we're handling in this program.
     if (info_header_.bits_per_pixel != kBitsPerPixel)
-      throw std::runtime_error("Error: Your .BMP file is not 24 bits per pixel, please input a 24 bits per pixel file!");
+      throw std::logic_error("Error: Your .BMP file is not 24 bits per pixel, please input a 24 bits per pixel file!");
     // Info header must be 40 bytes because we're
     // using BITMAPINFOHEADER, the common Windows
     // format for now.
@@ -42,7 +42,7 @@ void BMP::Read(const std::string& file_path) {
     // was no compression and we only want
     // uncompressed files.
     if (info_header_.compression != kCompression)
-      throw std::runtime_error("Error: Your .BMP file has been compressed before, please input an uncompressed file!");
+      throw std::logic_error("Error: Your .BMP file has been compressed before, please input an uncompressed file!");
 
     // Calculate row size and padding of pixel array
     // for cases where the width of our image is not
