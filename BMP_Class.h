@@ -54,7 +54,7 @@ class BMP {
   public:
       
     BMP(const std::string &file_path) {
-      read(file_path);
+      Read(file_path);
       // Splits the file path into the file name and
       // the working directory path to be used as
       // the name for our output target file in
@@ -65,7 +65,7 @@ class BMP {
 
     // Validates and parses the input file into
     // our headers and pixel data array.
-    void read(const std::string &file_path) {
+    void Read(const std::string &file_path) {
         // Open the input file in binary mode
         std::ifstream input_stream{file_path, std::ifstream::binary};
         if (input_stream.good()) {
@@ -96,7 +96,7 @@ class BMP {
           // for cases where the width of our image is not
           // divisible by 4.
           pixel_data_row_size_ = info_header_.width * (info_header_.bits_per_pixel / 8);
-          calculatePadding();
+          CalculatePadding();
 
           // Moves input stream pointer to where our pixel 
           // array data begins.
@@ -111,7 +111,7 @@ class BMP {
           }
           // Else we have to pad the rows with 0's
           else {
-            padStream(input_stream);
+            PadStream(input_stream);
           }
         }
         // The input stream initialization failed 
@@ -124,7 +124,7 @@ class BMP {
     // This non-destructive method (creates
     // a new file) edits our pixel data array 
     // to create a photo negative version.
-    void createPhotoNegative() {
+    void CreatePhotoNegative() {
       // Inverse every RGB value to create photo negative.
       // The algorithm is 255 - value = inverse
       for (size_t i = 0; i < pixel_data_.size(); i++) {
@@ -148,7 +148,7 @@ class BMP {
           output_stream.write((const char*)pixel_data_.data(), pixel_data_.size());
         }
         else {
-          padStream(output_stream);
+          PadStream(output_stream);
         }
         std::cout << "Photo negative of " + file_name_ + " created at " + path_name_ << std::endl;
       }
@@ -172,7 +172,7 @@ class BMP {
     // to fill each row of a pixel array. This
     // is only used if the width is not a 
     // multiple of 4.
-    void calculatePadding() {
+    void CalculatePadding() {
       uint32_t new_row_size = pixel_data_row_size_;
       while (new_row_size % 4 != 0) {
         new_row_size++;
@@ -183,7 +183,7 @@ class BMP {
     // An overloaded function that is called 
     // when reading files. This function only
     // affects the pixel array data.
-    void padStream(std::ifstream &input_stream) {
+    void PadStream(std::ifstream &input_stream) {
       // Loop through each row while reading in data then padding
       for (int i = 0; i < info_header_.height; i++) {
         input_stream.read((char*)(pixel_data_.data() + pixel_data_row_size_ * i), pixel_data_row_size_);
@@ -193,7 +193,7 @@ class BMP {
     
     // An overloaded function that is called 
     // when writing to files.
-    void padStream(std::ofstream &output_stream) {
+    void PadStream(std::ofstream &output_stream) {
       // Loop through each row while writing data then padding
       for (int i = 0; i < info_header_.height; i++) {
         output_stream.write((char*)(pixel_data_.data() + pixel_data_row_size_ * i), pixel_data_row_size_);

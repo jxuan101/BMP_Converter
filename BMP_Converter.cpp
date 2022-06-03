@@ -10,7 +10,7 @@ int main() {
   std::cin >> file_path;
   try {
     BMP bmp(file_path);
-    bmp.createPhotoNegative();
+    bmp.CreatePhotoNegative();
   }
   catch (const std::runtime_error &err) {
     std::cerr << err.what() << std::endl;
