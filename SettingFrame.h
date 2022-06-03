@@ -3,6 +3,7 @@
 
 #include <wx/frame.h>
 #include <wx/wx.h>
+#include <sys/stat.h>
 
 // This class creates a new window named Settings
 // which will be a child to our MainFrame and called

@@ -19,6 +19,7 @@ enum IDS {
 BEGIN_EVENT_TABLE(SettingFrame, wxFrame)
 	EVT_BUTTON(SELECT_FOLDER_BUTTON_ID, SettingFrame::OnSelectFolderButton)
 	EVT_BUTTON(SAVE_PATH_BUTTON_ID, SettingFrame::OnSaveButtonClick)
+	EVT_TEXT(TEXT_ID, SettingFrame::OnTextChanged)
 	EVT_BUTTON(CLOSE_BUTTON_ID, SettingFrame::Quit)
 END_EVENT_TABLE()
 
@@ -70,6 +71,40 @@ void SettingFrame::OnTextChanged(wxCommandEvent &event) {
 	current_folder_path_ = event.GetString();
 }
 
-void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) {
-	
+void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) { 
+	// Check whether the path is valid using stat
+	// from <sys/stat.h>
+	bool valid = false;
+	struct stat info;
+	if (stat(current_folder_path_, &info) == 0) {
+		if (info.st_mode & S_IFDIR) {
+			valid = true;
+			status_message_->SetForegroundColour("#579D23");
+			status_message_->SetLabel("Success!");
+		}
+		else if (info.st_mode & S_IFREG) {
+			status_message_->SetForegroundColour("#DA3E1C");
+			status_message_->SetLabel(
+				"Error: Your provided path is a file not a directory.");
+			return;
+		}
+		else {
+			status_message_->SetForegroundColour("#DA3E1C");
+			status_message_->SetLabel("Error: Your provided path is not a valid directory.");
+			return;
+		}
+	}
+	else {
+		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetLabel("Error: Your path cannot be found.");
+		return;
+	}
+
+	// Replace '\\' with '/' to avoid formatting issues
+	for (size_t i = 0; i < current_folder_path_.Length(); i++) {
+		if (current_folder_path_.GetChar(i) == wxString("\\")) {
+			current_folder_path_.SetChar(i, wxUniChar('/'));
+		}
+	}
+	folder_path_box_->ChangeValue(current_folder_path_);
 }
