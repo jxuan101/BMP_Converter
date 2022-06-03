@@ -1,25 +1,36 @@
 #include <wx/wx.h>
 
 #include "MainFrame.h"
+#include "BMP.h"
 
 enum IDS {
 	OPEN_FILE_BUTTON_ID = 2,
 	CREATE_NEGATIVE_ID = 3,
-	TEXT_ID = 4
+	TEXT_ID = 4,
+	OUTPUT_TEXT_ID = 5,
+	HELP_BUTTON_ID = 6,
+	CHANGE_OUTPUT_DEST_ID = 7
 };
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_BUTTON(OPEN_FILE_BUTTON_ID, MainFrame::OpenFile)
+	EVT_BUTTON(HELP_BUTTON_ID, MainFrame::OnHelpButtonClick)
+	EVT_BUTTON(CHANGE_OUTPUT_DEST_ID, MainFrame::OnChangeDestButtonClick)
 	EVT_BUTTON(CREATE_NEGATIVE_ID, MainFrame::OnNegativeButtonClick)
 	EVT_TEXT(TEXT_ID, MainFrame::OnTextChanged)
 END_EVENT_TABLE()
 
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(600, 135), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(600, 235), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	wxPanel *panel = new wxPanel(this, wxID_ANY);
-	wxStaticText *text = new wxStaticText(panel, wxID_ANY, "Input File Path (File must be in BMP format, 24 Bits Per Pixel, Uncompressed)", wxPoint(25, 15), wxDefaultSize, 0);
+	wxStaticText *input_text = new wxStaticText(panel, wxID_ANY, "Input File Path (File must be in BMP format, 24 Bits Per Pixel, Uncompressed)", wxPoint(20, 15), wxDefaultSize, 0);
 	wxButton *open_file_button = new wxButton(panel, OPEN_FILE_BUTTON_ID, "Open File", wxPoint(465, 10), wxSize(100, 35));
-	file_path_box_ = new wxTextCtrl(panel, TEXT_ID, "C:/", wxPoint(20, 35), wxSize(425, -1));
+	file_path_box_ = new wxTextCtrl(panel, TEXT_ID, "", wxPoint(20, 35), wxSize(425, -1));
 	wxButton* negative_button = new wxButton(panel, CREATE_NEGATIVE_ID, "Apply Filter", wxPoint(465, 50), wxSize(100, 35));
+	status_message_ = new wxStaticText(panel, OUTPUT_TEXT_ID, "", wxPoint(20, 60), wxSize(425, 70), wxST_NO_AUTORESIZE | wxST_ELLIPSIZE_END);
+	file_path_box_->SetHint("C:/example/example.bmp");
+	file_path_box_->SetFocus();
+	wxButton *help_button = new wxButton(panel, HELP_BUTTON_ID, "Help", wxPoint(465, 150), wxSize(100, 35));
+	wxButton* set_output_button = new wxButton(panel, CHANGE_OUTPUT_DEST_ID, "Change Output Destination", wxPoint(20, 150), wxSize(200, 35));
 }
 
 void MainFrame::Quit(wxCommandEvent& WXUNUSED(event))
@@ -45,6 +56,33 @@ void MainFrame::OnTextChanged(wxCommandEvent &event) {
 	current_doc_path_ = event.GetString();
 }
 
-void MainFrame::OnNegativeButtonClick(wxCommandEvent &WXUNUSED(event)) {
+void MainFrame::OnHelpButtonClick(wxCommandEvent &WXUNUSED(event)) {
 	
+}
+
+void MainFrame::OnChangeDestButtonClick(wxCommandEvent &WXUNUSED(event)) {
+	
+}
+
+void MainFrame::OnNegativeButtonClick(wxCommandEvent &WXUNUSED(event)) {
+	if (current_doc_path_.empty()) {
+		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetLabel("Error: No file specified.");
+	}
+	else {
+		CreatePhotoNegative();
+	}
+}
+
+void MainFrame::CreatePhotoNegative() {
+	try {
+		BMP bmp(current_doc_path_.ToStdString());
+		bmp.CreatePhotoNegative();
+		status_message_->SetForegroundColour("#579D23");
+		status_message_->SetLabel("Success!");
+	}
+	catch (const std::runtime_error& err) {
+		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetLabel(err.what());
+	}
 }
