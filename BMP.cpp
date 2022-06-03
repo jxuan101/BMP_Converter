@@ -11,8 +11,8 @@ BMP::BMP(const std::string& file_path) {
   // the working directory path to be used as
   // the name for our output target file in
   // createPhotoNegative().
-  file_name_ = file_path.substr(file_path.find_last_of('\\') + 1);
-  path_name_ = file_path.substr(0, file_path.find_last_of('\\') + 1);
+  file_name_ = file_path.substr(file_path.find_last_of('/') + 1);
+  path_name_ = file_path.substr(0, file_path.find_last_of('/') + 1);
 }
 
 // Validates and parses the input file into
@@ -69,7 +69,7 @@ void BMP::Read(const std::string& file_path) {
   // The input stream initialization failed 
   // meaning no such file was found.
   else {
-    throw std::runtime_error("Error: Unable to locate " + file_path + "!");
+    throw std::runtime_error("Error: Unable to locate BMP file at " + file_path + "!");
   }
 }
 
@@ -102,7 +102,6 @@ void BMP::CreatePhotoNegative() {
     else {
       PadStream(output_stream);
     }
-    std::cout << "Photo negative of " + file_name_ + " created at " + path_name_ << std::endl;
   }
   // The output stream initialization failed 
   // meaning the output file could not be created.
