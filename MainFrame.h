@@ -1,5 +1,6 @@
 #include <wx/frame.h>
 #include <wx/wx.h>
+#include <string>
 
 class MainFrame : public wxFrame {
   public:
@@ -8,11 +9,12 @@ class MainFrame : public wxFrame {
     void Quit(wxCommandEvent &WXUNUSED(event));
   
   private:
-    wxString CurrentDocPath = "C:/";
-    wxTextCtrl *FilePathBox;
+    wxString current_doc_path_ = "C:/";
+    wxTextCtrl *file_path_box_;
     
     void OpenFile(wxCommandEvent &WXUNUSED(event));
     void OnTextChanged(wxCommandEvent &event);
     void OnNegativeButtonClick(wxCommandEvent &WXUNUSED(event));
-    wxDECLARE_EVENT_TABLE();
+
+    DECLARE_EVENT_TABLE();
 };
