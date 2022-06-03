@@ -12,13 +12,13 @@ BMP::BMP(const std::string& file_path) {
   // the name for our output target file in
   // createPhotoNegative().
   file_name_ = file_path.substr(file_path.find_last_of('/') + 1);
-  path_name_ = file_path.substr(0, file_path.find_last_of('/') + 1);
+  outgoing_path_ = file_path.substr(0, file_path.find_last_of('/') + 1);
 }
 
 BMP::BMP(const std::string& file_path, const std::string& folder_path) {
   Read(file_path);
   file_name_ = file_path.substr(file_path.find_last_of('/') + 1);
-  path_name_ = folder_path;
+  outgoing_path_ = folder_path;
 }
 
 // Validates and parses the input file into

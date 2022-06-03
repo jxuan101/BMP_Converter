@@ -2,39 +2,59 @@
 
 #include "SettingFrame.h"
 
+// Enumerated IDs that will be used
+// to identify our widgets and also
+// give functionality to our widgets.
 enum IDS {
 	SELECT_FOLDER_BUTTON_ID = 1,
 	TEXT_ID = 2,
-	SAVE_FOLDER_BUTTON_ID = 3,
+	SAVE_PATH_BUTTON_ID = 3,
 	CLOSE_BUTTON_ID = 4,
 	RESULT_TEXT_ID = 5
 };
 
+// An event table that binds functions
+// to widgets using their IDs which calls
+// their bound functions when an event occurs.
 BEGIN_EVENT_TABLE(SettingFrame, wxFrame)
 	EVT_BUTTON(SELECT_FOLDER_BUTTON_ID, SettingFrame::OnSelectFolderButton)
-	EVT_BUTTON(SAVE_FOLDER_BUTTON_ID, SettingFrame::OnSaveButtonClick)
+	EVT_BUTTON(SAVE_PATH_BUTTON_ID, SettingFrame::OnSaveButtonClick)
 	EVT_BUTTON(CLOSE_BUTTON_ID, SettingFrame::Quit)
 END_EVENT_TABLE()
 
+// This constructor creates our "Settings" window and widgets.
 SettingFrame::SettingFrame(const wxString &title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(600, 180), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+	// We create a panel which allows us to create
+	// and place widgets on.
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
-	wxButton* open_folder_button = new wxButton(panel, SELECT_FOLDER_BUTTON_ID, "Select Folder", wxPoint(465, 29), wxSize(100, 35));
-	folder_path_box_ = new wxTextCtrl(panel, TEXT_ID, "", wxPoint(20, 35), wxSize(425, -1));
-	folder_path_box_->SetHint("C:/example/");
-	folder_path_box_->SetFocus();
+
+	// Static texts
 	wxStaticText* input_text = new wxStaticText(panel, wxID_ANY, "Output Destination Directory", wxPoint(20, 15), wxDefaultSize, 0);
-	wxButton* save_folder_button = new wxButton(panel, SAVE_FOLDER_BUTTON_ID, "Save", wxPoint(350, 100), wxSize(100, 35));
+  status_message_ = new wxStaticText(panel, RESULT_TEXT_ID, "", wxPoint(20, 60), wxSize(425, 30), wxST_NO_AUTORESIZE | wxST_ELLIPSIZE_END);
+
+	// Buttons
+	wxButton* save_folder_button = new wxButton(panel, SAVE_PATH_BUTTON_ID, "Save", wxPoint(350, 100), wxSize(100, 35));
 	wxButton* close_button = new wxButton(panel, CLOSE_BUTTON_ID, "Close", wxPoint(465, 100), wxSize(100, 35));
-	status_message_ = new wxStaticText(panel, RESULT_TEXT_ID, "", wxPoint(20, 60), wxSize(425, 30), wxST_NO_AUTORESIZE | wxST_ELLIPSIZE_END);
+  wxButton* open_folder_button = new wxButton(panel, SELECT_FOLDER_BUTTON_ID, "Select Folder", wxPoint(465, 29), wxSize(100, 35));
+
+	// Text Box
+  folder_path_box_ = new wxTextCtrl(panel, TEXT_ID, "", wxPoint(20, 35), wxSize(425, -1));
+  folder_path_box_->SetHint("C:/example/");
+  folder_path_box_->SetFocus();
 }
 
 void SettingFrame::Quit(wxCommandEvent &WXUNUSED(event)) {
 	Close(true);
 }
 
+// This function will open a new dialog box that prompts
+// the users to select a folder or directory using the 
+// system's builtin file explorer.
 void SettingFrame::OnSelectFolderButton(wxCommandEvent& WXUNUSED(event)) {
 	wxDirDialog* OpenDialog = new wxDirDialog(this, "Select your output directory", wxEmptyString, wxDD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, wxDirDialogNameStr);
 
+	// Update the path if the user successfully
+	// chooses a directory.
 	if (OpenDialog->ShowModal() == wxID_OK) {
 		current_folder_path_ = OpenDialog->GetPath();
 		for (size_t i = 0; i < current_folder_path_.Length(); i++) {

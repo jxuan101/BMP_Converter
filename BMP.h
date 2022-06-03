@@ -40,14 +40,18 @@ struct BitmapInfoHeader {
   uint32_t size{0};                       // Size of the DIB header (bytes)
   int32_t width{0};                       // Width of bitmap in pixels
   int32_t height{0};                      // Height of bitmap in pixels
-  uint16_t number_of_planes{0};           // Number of color planes, must be 1
+  uint16_t number_of_planes{0};           // Number of color planes, must 
+                                          // be 1
   uint16_t bits_per_pixel{0};             // No. of bits per pixel
   uint32_t compression{0};                // 0 - uncompressed. 
   uint32_t image_size{0};                 // 0 - for uncompressed images.
   int32_t horizontal_resolution{0};       // Pixel per meter horizontally
   int32_t vertical_resolution{0};         // Pixel per meter vertically
-  uint32_t colors{0};                     // Number of colors in the color palette. 0 = 2^n colors
-  uint32_t colors_important{0};           // Number of important colors used, 0 when every color is important
+  uint32_t colors{0};                     // Number of colors in the color 
+                                          // palette. 0 = 2^n colors
+  uint32_t colors_important{0};           // Number of important colors 
+                                          // used, 0 when every color is
+                                          // important
 };
 
 class BMP {
@@ -69,10 +73,14 @@ class BMP {
     BitmapFileHeader file_header_;
     BitmapInfoHeader info_header_;
     std::vector<uint8_t> pixel_data_;
-    std::vector<uint8_t> padding_;
+    std::vector<uint8_t> padding_;            // Contains the amount of 
+                                              // padding we need for files
+                                              // whose widths are not divisible
+                                              // by 4.
     std::string file_name_;
-    std::string path_name_;
-    uint32_t pixel_data_row_size_;
+    std::string outgoing_path_;
+    uint32_t pixel_data_row_size_;            // The size of a row in the pixel
+                                              // data including padding
 
     // Calculates the amount of padding we
     // need to ignore when reading or supply
