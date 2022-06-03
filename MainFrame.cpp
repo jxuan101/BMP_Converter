@@ -109,8 +109,15 @@ void MainFrame::OnNegativeButtonClick(wxCommandEvent& WXUNUSED(event)) {
 
 void MainFrame::CreatePhotoNegative() {
 	try {
-		BMP bmp(current_doc_path_.ToStdString());
-		bmp.CreatePhotoNegative();
+		BMP* bmp;
+		if (current_output_path_.empty()) {
+			bmp = new BMP(current_doc_path_.ToStdString());
+			bmp->CreatePhotoNegative();
+		}
+		else {
+			bmp = new BMP(current_doc_path_.ToStdString(), current_output_path_.ToStdString());
+			bmp->CreatePhotoNegative();
+		}
 		status_message_->SetForegroundColour("#579D23");
 		status_message_->SetLabel("Success!");
 	}

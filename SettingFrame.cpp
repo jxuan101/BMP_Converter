@@ -1,6 +1,7 @@
 #include <wx/wx.h>
 
 #include "SettingFrame.h"
+#include "MainFrame.h"
 
 // Enumerated IDs that will be used
 // to identify our widgets and also
@@ -107,4 +108,5 @@ void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) {
 		}
 	}
 	folder_path_box_->ChangeValue(current_folder_path_);
+	((MainFrame*)GetParent())->SetOutputPath(current_folder_path_);
 }

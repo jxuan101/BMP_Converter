@@ -11,6 +11,7 @@ class MainFrame : public wxFrame {
   public:
     MainFrame(const wxString& title);
 
+    void SetOutputPath(wxString& output_path);
     void Quit(wxCommandEvent& WXUNUSED(event));
     
   private:
