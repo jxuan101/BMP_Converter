@@ -8,9 +8,9 @@ BEGIN_EVENT_TABLE(HelpFrame, wxFrame)
   EVT_BUTTON(LEARN_MORE_BUTTON_ID, HelpFrame::HandleButton)
 END_EVENT_TABLE()
 
+// Creates a Help window that displays information about the program and includes
+// a button the brings users to the github repo README.
 HelpFrame::HelpFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(500, 300), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
-  // We create a panel which allows us to create
-  // and place widgets on.
   wxPanel* panel = new wxPanel(this, wxID_ANY);
 
   wxString help_text = "ABOUT:\nBMP Negative Converter is a non-destructive image processing program that takes in a .BMP image file and creates a new .BMP image file with the photo negative filter on. It also assumes that the .BMP image file that you input is uncompressed and is in 24 bpp (bits per pixel) format.";

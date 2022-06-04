@@ -55,7 +55,7 @@ void MainFrame::SetOutputPath(wxString& output_path) {
 }
 
 void MainFrame::Quit(wxCommandEvent& WXUNUSED(event)){
-	// Closes every children if this window is closed.
+	// Recursively destroys children windows if there exists any.
 	if (this->GetChildren().GetCount() > 0) {
 		this->DestroyChildren();
 	}
@@ -111,6 +111,7 @@ void MainFrame::OnChangeDestButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	settings->Show(true);
 }
 
+// Display an error if the input path is empty.
 void MainFrame::OnNegativeButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	if (current_doc_path_.empty()) {
 		status_message_->SetForegroundColour(kErrorRGB);

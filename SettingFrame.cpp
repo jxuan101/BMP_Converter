@@ -24,8 +24,6 @@ END_EVENT_TABLE()
 
 // This constructor creates our "Settings" window and widgets.
 SettingFrame::SettingFrame(const wxString &title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(600, 180), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
-	// We create a panel which allows us to create
-	// and place widgets on.
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 
 	// Static texts
@@ -48,8 +46,8 @@ void SettingFrame::Quit(wxCommandEvent &WXUNUSED(event)) {
 	Close(true);
 }
 
+// Replace '\\' with '/' to avoid formatting issues
 void SettingFrame::FormatPath() {
-	// Replace '\\' with '/' to avoid formatting issues
 	for (size_t i = 0; i < current_folder_path_.Length(); i++) {
 		if (current_folder_path_.GetChar(i) == wxString("\\")) {
 			current_folder_path_.SetChar(i, wxUniChar('/'));
@@ -62,7 +60,6 @@ void SettingFrame::FormatPath() {
 // system's builtin file explorer.
 void SettingFrame::OnSelectFolderButton(wxCommandEvent& WXUNUSED(event)) {
 	wxDirDialog* OpenDialog = new wxDirDialog(this, "Select your output directory", wxEmptyString, wxDD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, wxDirDialogNameStr);
-
 	// Update the path if the user successfully
 	// chooses a directory.
 	if (OpenDialog->ShowModal() == wxID_OK) {
@@ -107,6 +104,7 @@ void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) {
 		return;
 	}
 
+	// If the path is valid and is a directory, we save and display the path.
 	folder_path_box_->ChangeValue(current_folder_path_);
 	// Transfer the set path over to the main window for output.
 	((MainFrame*)GetParent())->SetOutputPath(current_folder_path_);
