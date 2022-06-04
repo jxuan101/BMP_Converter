@@ -19,6 +19,9 @@ const uint16_t kBitsPerByte = 8;
 const uint16_t kBitsPerPixel = 24;
 const uint32_t kCompression = 0;
 const uint16_t kRGBMax = 255;
+const uint32_t kDataOffsetV1 = 54;
+const uint32_t kDataOffsetV4 = 122;
+const uint32_t kDataOffsetV5 = 138;
 
 // In C++, memory alignment is dependent on the 
 // compiler, we need to use pragma pack to 
@@ -133,14 +136,34 @@ class BMP {
     // when outputting.
     void CalculatePadding();
 
-    // This function applies only to input.
-    // Ignores memory padding.
-    void PadStream(std::ifstream& input_stream);
+    // Helper functions that are overloaded to ignore memory 
+    // padding when reading in data. Their difference is the 
+    // type of info header they take as a parameter.
+    void PadStream(std::ifstream& input_stream, const BitmapInfoHeader& info_header);
+
+    void PadStream(std::ifstream& input_stream, const BitmapV4InfoHeader& info_header);
+
+    void PadStream(std::ifstream& input_stream, const BitmapV5InfoHeader& info_header);
     
-    // This function applies only to output.
-    // Supplies memory padding according to 
-    // the size of padding_.
-    void PadStream(std::ofstream& output_stream);
+    // Helper functions that are overloaded to supply memory 
+    // padding according to the size of padding_. This function 
+    // applies only to OUTPUT. Their difference is the type of
+    // info header they take as a parameter.
+    void PadStream(std::ofstream& output_stream, const BitmapInfoHeader& info_header);
+
+    void PadStream(std::ofstream& output_stream, const BitmapV4InfoHeader& info_header);
+
+    void PadStream(std::ofstream& output_stream, const BitmapV5InfoHeader& info_header);
+
+    // Helper functions that are overloaded to 
+    // read info header data into either BitmapInfoHeader,
+    // BitmapV4InfoHeader, or BitmapV5InfoHeader. The only
+    // difference between them is the second parameter.
+    void ReadInfoHeader(std::ifstream& input_stream, BitmapInfoHeader& info_header);
+
+    void ReadInfoHeader(std::ifstream& input_stream, BitmapV4InfoHeader& info_header);
+
+    void ReadInfoHeader(std::ifstream& input_stream, BitmapV5InfoHeader& info_header);
 };
 
 #endif // BMP_H_
