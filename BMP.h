@@ -28,6 +28,10 @@ const uint16_t kRGBMax = 255;
 // slower access.
 #pragma pack(1)                           
 
+
+// BMP Header Declarations
+
+// Always gonna be 14 bytes total.
 struct BitmapFileHeader {
   uint16_t file_type{0x0000};             // File type
   uint32_t file_size{0};                  // Size of the BMP file (bytes)
@@ -36,6 +40,9 @@ struct BitmapFileHeader {
   uint32_t data_offset{0};                // Position of the pixel array
 };
 
+// BMP Info Header Declarations
+
+// 40 Bytes, used when data_offset == 54
 struct BitmapInfoHeader {
   uint32_t size{0};                       // Size of the DIB header (bytes)
   int32_t width{0};                       // Width of bitmap in pixels
@@ -52,6 +59,43 @@ struct BitmapInfoHeader {
   uint32_t colors_important{0};           // Number of important colors 
                                           // used, 0 when every color is
                                           // important
+};
+
+// The xyz coordinates of a color.
+struct ColorCoords {
+  int32_t ciexyzX{0};
+  int32_t ciexyzY{0};
+  int32_t ciexyzZ{0};
+};
+
+// The xyz coordinates of RGB endpoints.
+// Used for BitmapV4InfoHeader and
+// BitMapV5InfoHeader.
+struct ColorEndpoints {
+  ColorCoords ciexyzRed{0, 0, 0};
+  ColorCoords ciexyzGreen{0, 0, 0};
+  ColorCoords ciexyzBlue{0, 0, 0};
+};
+
+// 108 Bytes, used when data_offset == 122
+struct BitmapV4InfoHeader : BitmapInfoHeader {
+  uint32_t red_mask{0};
+  uint32_t green_mask{0};
+  uint32_t blue_mask{0};
+  uint32_t alpha_mask{0};
+  uint32_t cs_type{0};
+  ColorEndpoints endpoints;
+  uint32_t gamma_red{0};
+  uint32_t gamma_green{0};
+  uint32_t gamme_blue{0};
+};
+
+// 124 Bytes, used when data_offset == 138
+struct BitmapV5InfoHeader : BitmapV4InfoHeader {
+  uint32_t intent{0};
+  uint32_t profile_data{0};
+  uint32_t profile_size{0};
+  uint32_t app_reserved3{0};
 };
 
 class BMP {
@@ -72,6 +116,8 @@ class BMP {
   private:
     BitmapFileHeader file_header_;
     BitmapInfoHeader info_header_;
+    BitmapV4InfoHeader info_header_v4_;
+    BitmapV5InfoHeader info_header_v5_;
     std::vector<uint8_t> pixel_data_;
     std::vector<uint8_t> padding_;            // Contains the amount of 
                                               // padding we need for files
