@@ -142,34 +142,22 @@ class BMP {
     // "copy" to the name.
     bool CheckOutputFileExists(const std::string& filename);
 
-    // Helper functions that are overloaded to ignore memory 
-    // padding when reading in data. Their difference is the 
-    // type of info header they take as a parameter.
-    void PadStream(std::ifstream& input_stream, const BitmapInfoHeader& info_header);
-
-    void PadStream(std::ifstream& input_stream, const BitmapV4InfoHeader& info_header);
-
-    void PadStream(std::ifstream& input_stream, const BitmapV5InfoHeader& info_header);
+    // Helper function that ignores memory padding 
+    // when reading in data. Only used for INPUT.
+    template <typename InfoHeaderType>
+    void IgnorePaddingStream(std::ifstream& input_stream, const InfoHeaderType& info_header);
     
-    // Helper functions that are overloaded to supply memory 
-    // padding according to the size of padding_. This function 
-    // applies only to OUTPUT. Their difference is the type of
-    // info header they take as a parameter.
-    void PadStream(std::ofstream& output_stream, const BitmapInfoHeader& info_header);
+    // Helper function that supply memory padding 
+    // according to the size of padding_. Only used
+    // for OUTPUT.
+    template <typename InfoHeaderType>
+    void AddPaddingStream(std::ofstream& output_stream, const InfoHeaderType& info_header);
 
-    void PadStream(std::ofstream& output_stream, const BitmapV4InfoHeader& info_header);
-
-    void PadStream(std::ofstream& output_stream, const BitmapV5InfoHeader& info_header);
-
-    // Helper functions that are overloaded to 
-    // read info header data into either BitmapInfoHeader,
-    // BitmapV4InfoHeader, or BitmapV5InfoHeader. The only
-    // difference between them is the second parameter.
-    void ReadInfoHeader(std::ifstream& input_stream, BitmapInfoHeader& info_header);
-
-    void ReadInfoHeader(std::ifstream& input_stream, BitmapV4InfoHeader& info_header);
-
-    void ReadInfoHeader(std::ifstream& input_stream, BitmapV5InfoHeader& info_header);
+    // Helper function that reads info header data 
+    // into either BitmapInfoHeader, BitmapV4InfoHeader, 
+    // or BitmapV5InfoHeader.
+    template <typename InfoHeaderType>
+    void ReadInfoHeader(std::ifstream& input_stream, InfoHeaderType& info_header);
 };
 
 #endif // BMP_H_
