@@ -1,6 +1,9 @@
 #include "SettingFrame.h"
 #include "MainFrame.h"
 
+const wxColour kSuccessRGB = "#579D23";
+const wxColour kErrorRGB = "#DA3E1C";
+
 // Enumerated IDs that will be used
 // to identify our widgets and also
 // give functionality to our widgets.
@@ -85,24 +88,24 @@ void SettingFrame::OnSaveButtonClick(wxCommandEvent& WXUNUSED(event)) {
 		if (info.st_mode & S_IFDIR) {
 			valid = true;
 			FormatPath();
-			status_message_->SetForegroundColour("#579D23");
+			status_message_->SetForegroundColour(kSuccessRGB);
 			status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Success! The output directory is now: " + current_folder_path_);
 			status_message_->Wrap(425);
 		}
 		else if (info.st_mode & S_IFREG) {
-			status_message_->SetForegroundColour("#DA3E1C");
+			status_message_->SetForegroundColour(kErrorRGB);
 			status_message_->SetLabel(
 				wxDateTime::Now().FormatTime() + " Error: Your provided path is a file not a directory.");
 			return;
 		}
 		else {
-			status_message_->SetForegroundColour("#DA3E1C");
+			status_message_->SetForegroundColour(kErrorRGB);
 			status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Error: Your provided path is not a valid directory.");
 			return;
 		}
 	}
 	else {
-		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetForegroundColour(kErrorRGB);
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Error: Your path cannot be found.");
 		return;
 	}

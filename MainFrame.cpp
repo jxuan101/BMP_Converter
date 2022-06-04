@@ -3,6 +3,9 @@
 #include "HelpFrame.h"
 #include "BMP.h"
 
+const wxColour kSuccessRGB = "#579D23";
+const wxColour kErrorRGB = "#DA3E1C";
+
 // Enumerated IDs that will be used
 // to identify our widgets and also
 // give functionality to our widgets.
@@ -113,7 +116,7 @@ void MainFrame::OnChangeDestButtonClick(wxCommandEvent& WXUNUSED(event)) {
 
 void MainFrame::OnNegativeButtonClick(wxCommandEvent& WXUNUSED(event)) {
 	if (current_doc_path_.empty()) {
-		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetForegroundColour(kErrorRGB);
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Error: No file specified.");
 	}
 	else {
@@ -139,20 +142,20 @@ void MainFrame::CreatePhotoNegative() {
 			bmp = new BMP(current_doc_path_.ToStdString(), current_output_path_.ToStdString());
 			bmp->CreatePhotoNegative();
 		}
-		status_message_->SetForegroundColour("#579D23");
+		status_message_->SetForegroundColour(kSuccessRGB);
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Success! File created at: " + current_output_path_);
 		status_message_->Wrap(425);
 	}
 	// If the file is not found.
 	catch (const std::runtime_error &err) {
-		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetForegroundColour(kErrorRGB);
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " " + err.what());
 		status_message_->Wrap(425);
 	}
 	// If the file is compressed, not 24 bits
 	// per pixel, or not a BMP file.
 	catch (const std::logic_error &err) {
-		status_message_->SetForegroundColour("#DA3E1C");
+		status_message_->SetForegroundColour(kErrorRGB);
 		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " " + err.what());
 		status_message_->Wrap(425);
 	}
