@@ -3,9 +3,6 @@
 #include "HelpFrame.h"
 #include "BMP.h"
 
-const wxColour kSuccessRGB = "#579D23";
-const wxColour kErrorRGB = "#DA3E1C";
-
 // Enumerated IDs that will be used
 // to identify our widgets and also
 // give functionality to our widgets.

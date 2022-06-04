@@ -4,6 +4,10 @@
 #include <wx/frame.h>
 #include <wx/wx.h>
 
+// Constants
+const wxColour kSuccessRGB = "#579D23";
+const wxColour kErrorRGB = "#DA3E1C";
+
 // MainFrame is derived from wxFrame and
 // contains methods that will create the
 // main window of our program's GUI.
