@@ -125,6 +125,7 @@ void MainFrame::OnNegativeButtonClick(wxCommandEvent& WXUNUSED(event)) {
 
 void MainFrame::CreatePhotoNegative() {
 	try {
+		std::string target_dir_path = "";
 		BMP* bmp;
 		// If the user provided no custom target directory
 		// for the output.
@@ -132,15 +133,16 @@ void MainFrame::CreatePhotoNegative() {
 			std::string file_path = current_doc_path_.ToStdString();
 			bmp = new BMP(file_path);
 			bmp->CreatePhotoNegative();
-			current_output_path_ = file_path.substr(0, file_path.find_last_of('/') + 1);
+			target_dir_path = file_path.substr(0, file_path.find_last_of('/') + 1);
 		}
 		// If the user did set a custom target directory.
 		else {
 			bmp = new BMP(current_doc_path_.ToStdString(), current_output_path_.ToStdString());
 			bmp->CreatePhotoNegative();
+			target_dir_path = current_output_path_.ToStdString();
 		}
 		status_message_->SetForegroundColour(kSuccessRGB);
-		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Success! File created at: " + current_output_path_);
+		status_message_->SetLabel(wxDateTime::Now().FormatTime() + " Success! File created at: " + target_dir_path);
 		status_message_->Wrap(425);
 	}
 	// If the file is not found.
