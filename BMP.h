@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sys/stat.h>
 
 // Constants Definitions
 // kBmpHex is used to identify a BMP file.
@@ -135,6 +136,11 @@ class BMP {
     // need to ignore when reading or supply
     // when outputting.
     void CalculatePadding();
+
+    // Checks if the output file's name already
+    // exists. This determines if we should add
+    // "copy" to the name.
+    bool CheckOutputFileExists(const std::string& filename);
 
     // Helper functions that are overloaded to ignore memory 
     // padding when reading in data. Their difference is the 

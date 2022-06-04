@@ -42,7 +42,7 @@ void BMP::Read(const std::string& file_path) {
         ReadInfoHeader(input_stream, info_header_v5_);
         break;
       default:
-        throw std::logic_error("Error: The BMP file might be corrupted. Please try another.");
+        ReadInfoHeader(input_stream, info_header_);
     }
   }
   // The input stream initialization failed 
@@ -64,18 +64,40 @@ void BMP::CreatePhotoNegative() {
 
   // Construct full path to output file and
   // adds a negative identifier to the file name.
+  // Add " - copy" to the end of the file name
+  // if the output file already exists so as to
+  // not overwrite any files.
   if (outgoing_path_.length() > 0) {
     if (outgoing_path_[outgoing_path_.length() - 1] != '/') {
       outgoing_path_ += '/';
     }
   }
-  std::string output_file = outgoing_path_ + "negative_" + file_name_;
+  std::string output_file_path = outgoing_path_ + "negative_" + file_name_;
+  // Loop names with additional " - copy" until one
+  // is not found.
+  std::string file_name_copy = file_name_;
+  bool file_check_loop = true;
+  while (file_check_loop) {
+    if (CheckOutputFileExists(output_file_path)) {
+      uint32_t extension_pos = file_name_.find_last_of('.');
+      if (extension_pos != std::string::npos) {
+        file_name_copy.insert(extension_pos, " - copy");
+        output_file_path = outgoing_path_ + "negative_" + file_name_copy;
+      }
+      else {
+        throw std::runtime_error("Error: Unable to create output file.");
+      }
+    }
+    else {
+      file_check_loop = false;
+    }
+  }
 
   // Open an output stream to write binary 
   // data to a new file if it doesn't already
   // exist or overwrites an existing file 
   // of the same name.
-  std::ofstream output_stream{ output_file, std::ofstream::binary };
+  std::ofstream output_stream{ output_file_path, std::ofstream::binary };
   if (output_stream.good()) {
     output_stream.write((const char*)&file_header_, sizeof(file_header_));
     
@@ -135,6 +157,19 @@ void BMP::CalculatePadding() {
     new_row_size++;
   }
   padding_.resize(new_row_size - pixel_data_row_size_);
+}
+
+bool BMP::CheckOutputFileExists(const std::string& filepath) {
+  struct stat buf;
+  if (stat(filepath.c_str(), &buf) != 0) {
+    return 0;
+  }
+  else if (buf.st_mode & S_IFREG) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 // PadStream functions that affect input, ignores
