@@ -1,9 +1,9 @@
 # :camera:BMP Converter (BMP Negative Converter)
 is a non-destructive image processing program that takes in a .BMP image file and creates a new .BMP image file with the photo negative filter on. This program uses a GUI built using [wxWidgets](https://www.wxwidgets.org) for C++. 
 
-NOTE: Currently, this program only supports windows. Feel free to try and compile the source by yourself on Linux and Mac systems since this program was made with wxWidgets, a C++ library made for cross platform applications.
+NOTE: Currently, this program has only been tested for windows. Feel free to try and compile the source by yourself on Linux and Mac systems since this program was made with wxWidgets, a C++ library made for cross platform applications.
 
-To use this program, either download the executable or use the building instructions [here](#build-from-source).
+To use this program, either download the release or use the building instructions [here](#build-from-source).
 
 This program assumes the following about the input:
 1. Must be a .BMP image file
@@ -18,7 +18,7 @@ The BMP file format also known as a bitmap image file, device independent bitmap
 
 For the purposes of this program, a valid BMP file consists of several parts:
 1. Bitmap file header - 14 bytes
-2. DIB header - 40 bytes, we're using BITMAPINFOHEADER because it's the commonly used header
+2. DIB header - 40 bytes, 108 bytes, 124 bytes
 3. Pixel array - depends on the size of the image
 
 This program will read in all the data and edit only the pixel array because we only want to change the RGB values of the image and leave everything else untouched because there's a high chance of corrupting the resulting image.
@@ -37,7 +37,7 @@ A negative of a negative will create a positive meaning the photo negative of (1
 This program will traverse through the pixel array of a BMP file and perform this operation to every RGB value.
 
 ### Tech Used
-This program was developed using C++ in Visual Studio 2022. The GUI is also written in C++ using [wxWidgets](https://www.wxwidgets.org), a C++ library that lets developers create cross platform applications.
+This program was developed using C++ using the latest version of Visual Studio (v17.1.6). The GUI is also written in C++ using the lastest version of [wxWidgets](https://www.wxwidgets.org) (v3.1.6), a C++ library that lets developers create cross platform applications.
 
 ## User Instructions
 Start the application. 
@@ -84,4 +84,23 @@ If you need a brief explanation of what the program is or a brief refresher of t
 </p>
 
 ## Build From Source
-TBD
+### Requirements (Preferably the last versions)
+Visual Studio (v17.1.6)
+
+wxWidgets (v3.1.6)
+
+### Building
+Get the requirements if you don't have them already. 
+
+Download the repository.
+
+Open the Visual Studio solution file included with the repository, should be named "BMP_Converter.sln".
+
+Choose the release x64 configuration in Visual Studio for the project.
+
+Go to Build then Compile.
+
+BMP_Converter is ready to be used!
+
+
+
