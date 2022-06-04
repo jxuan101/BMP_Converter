@@ -40,7 +40,7 @@ This program will traverse through the pixel array of a BMP file and perform thi
 This program was developed using C++ using the latest version of Visual Studio (v17.1.6). The GUI is also written in C++ using the lastest version of [wxWidgets](https://www.wxwidgets.org) (v3.1.6), a C++ library that lets developers create cross platform applications.
 
 ## User Instructions
-Start the application. 
+Install the Visual C++ 2015-2022 Redistributable if your system does not have them already. The redistributable will be made available for you in the redist folder or you can download them from Microsoft directly. Start the application. 
  
 <p align="center">
   <img src="https://user-images.githubusercontent.com/35944722/171955358-d7eeb924-8337-49c2-829b-3c272fc055de.png">
@@ -86,6 +86,8 @@ If you need a brief explanation of what the program is or a brief refresher of t
 ## Build From Source
 ### Requirements (Preferably the last versions)
 Visual Studio (v17.1.6)
+
+Microsoft Visual C++ 2015-2022 Redistributable (x64 or x86)
 
 wxWidgets (v3.1.6)
 
